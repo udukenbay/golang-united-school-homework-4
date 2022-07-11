@@ -1,4 +1,4 @@
-package string_sum
+package stringsg_sum
 
 //package main
 
@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Sprint(StringSum(" 3+5 "))
+	fmt.Sprint(StringSum(" -24 - 55 "))
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -35,36 +35,43 @@ func StringSum(input string) (output string, err error) {
 		return "", errorEmptyInput
 	}
 
-	operand := []string{}
-	s := []int{}
+	var operand = ""
+	var str = ""
+	var s []int
 
 	for _, k := range input {
-		if k == '+' || k == '-' {
-			operand = append(operand, string(k))
-		} else {
-			d, err := strconv.Atoi(string(k))
-			if err != nil {
-				if len(s) == 2 {
-					return "", errorNotTwoOperands
-				}
-
-				return "", err
+		if string(k) == "-" || string(k) == "+" {
+			if operand == "-" && string(k) == "-" {
+				operand = "+"
 			} else {
-				s = append(s, d)
+				operand = "-"
 			}
+
+			d, err := strconv.Atoi(str)
+			if len(s) == 2 {
+				return "", errorNotTwoOperands
+			} else {
+				if err != nil {
+					return "", err
+				} else {
+					s = append(s, d)
+				}
+			}
+			str = ""
+		} else {
+			fmt.Println(string(k))
+			str += string(k)
 		}
 	}
 
 	var sum int
 
-	for _, t := range operand {
-		for _, i := range s {
-			switch t {
-			case "-":
-				sum -= i
-			case "+":
-				sum += i
-			}
+	for _, i := range s {
+		switch operand {
+		case "-":
+			sum -= i
+		case "+":
+			sum += i
 		}
 	}
 
