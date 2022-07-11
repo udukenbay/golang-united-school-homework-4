@@ -36,14 +36,14 @@ func StringSum(input string) (output string, err error) {
 	}
 
 	operand := []string{}
-	s := []int64{}
+	s := []int{}
 
 	for _, k := range input {
 		if k == '+' || k == '-' {
 			operand = append(operand, string(k))
 		} else {
-			d, err := strconv.ParseInt(string(k), 10, 64)
-			if err != nil && err.(*strconv.NumError).Err == strconv.ErrSyntax {
+			d, err := strconv.Atoi(string(k))
+			if err != nil && err.(*strconv.NumError).Err == strconv.ErrSyntax && len(s) == 2 {
 				return "", errorNotTwoOperands
 			} else {
 				s = append(s, d)
@@ -51,7 +51,7 @@ func StringSum(input string) (output string, err error) {
 		}
 	}
 
-	var sum int64
+	var sum int
 
 	for _, t := range operand {
 		for _, i := range s {
@@ -64,5 +64,5 @@ func StringSum(input string) (output string, err error) {
 		}
 	}
 
-	return strconv.Itoa(int(sum)), nil
+	return strconv.Itoa(sum), nil
 }
