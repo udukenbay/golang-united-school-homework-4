@@ -1,5 +1,6 @@
-//package string_sum
-package main
+package string_sum
+
+//package main
 
 import (
 	"fmt"
