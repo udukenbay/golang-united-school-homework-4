@@ -1,7 +1,5 @@
 package string_sum
 
-//package main
-
 import (
 	"fmt"
 	"strconv"
@@ -9,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Sprint(StringSum(" 3+5 "))
+	fmt.Println(StringSum(" 3+5 "))
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -51,24 +49,18 @@ func StringSum(input string) (output string, err error) {
 		}
 	}
 
-	cntr := 0
-	for _, t := range operand {
-		if t == "-" {
-			cntr++
-		}
-	}
-
 	var sum int64
 
-	if cntr%2 == 0 {
+	for _, t := range operand {
 		for _, i := range s {
-			sum += i
-		}
-	} else {
-		for _, i := range s {
-			sum -= i
+			switch t {
+			case "-":
+				sum -= i
+			case "+":
+				sum += i
+			}
 		}
 	}
 
-	return string(sum), nil
+	return strconv.Itoa(int(sum)), nil
 }
