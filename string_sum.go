@@ -51,22 +51,16 @@ func StringSum(input string) (output string, err error) {
 		}
 	}
 
-	cntr := 0
-	for _, t := range operand {
-		if t == "-" {
-			cntr++
-		}
-	}
-
 	var sum int64
 
-	if cntr%2 == 0 {
+	for _, t := range operand {
 		for _, i := range s {
-			sum += i
-		}
-	} else {
-		for _, i := range s {
-			sum -= i
+			switch t {
+			case "-":
+				sum -= i
+			case "+":
+				sum += i
+			}
 		}
 	}
 
