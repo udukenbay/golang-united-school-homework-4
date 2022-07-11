@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Println(StringSum(" 3+5 "))
+	fmt.Sprint(StringSum(" 3+5 "))
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
