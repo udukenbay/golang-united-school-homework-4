@@ -44,13 +44,11 @@ func StringSum(input string) (output string, err error) {
 		} else {
 			d, err := strconv.Atoi(string(k))
 			if err != nil {
-				if err.(*strconv.NumError).Err == strconv.ErrSyntax {
-					return "", err
-				}
-
 				if len(s) == 2 {
 					return "", errorNotTwoOperands
 				}
+
+				return "", err
 			} else {
 				s = append(s, d)
 			}
