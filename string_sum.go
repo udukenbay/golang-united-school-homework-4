@@ -1,4 +1,4 @@
-package stringsg_sum
+package string_sum
 
 //package main
 
@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Sprint(StringSum(" -24 - 55 "))
+	fmt.Sprint(StringSum(" -24 + 55 "))
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -40,6 +40,10 @@ func StringSum(input string) (output string, err error) {
 	var s []int
 
 	for _, k := range input {
+		if string(k) == " " {
+			continue
+		}
+
 		if string(k) == "-" || string(k) == "+" {
 			if operand == "-" && string(k) == "-" {
 				operand = "+"
@@ -47,20 +51,30 @@ func StringSum(input string) (output string, err error) {
 				operand = "-"
 			}
 
-			d, err := strconv.Atoi(str)
-			if len(s) == 2 {
-				return "", errorNotTwoOperands
-			} else {
-				if err != nil {
-					return "", err
+			if len(str) > 0 {
+				d, err := strconv.Atoi(str)
+				if len(s) == 2 {
+					return "", errorNotTwoOperands
 				} else {
-					s = append(s, d)
+					if err != nil {
+						return "", err
+					} else {
+						s = append(s, d)
+					}
 				}
+				str = ""
 			}
-			str = ""
 		} else {
-			fmt.Println(string(k))
 			str += string(k)
+		}
+	}
+
+	if len(str) != 0 {
+		d, err := strconv.Atoi(str)
+		if err != nil {
+			return "", err
+		} else {
+			s = append(s, d)
 		}
 	}
 
