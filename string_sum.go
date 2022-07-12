@@ -9,7 +9,16 @@ import (
 )
 
 func main() {
-	fmt.Sprint(StringSum(" -24 + 55 "))
+	fmt.Println(StringSum("24+55"))
+	fmt.Println(StringSum("-24+55"))
+	fmt.Println(StringSum("24-55"))
+	fmt.Println(StringSum("-24-55"))
+	fmt.Println(StringSum(" -24 - 55 "))
+	fmt.Println(StringSum(""))
+	fmt.Println(StringSum("11+23+43"))
+	fmt.Println(StringSum("42"))
+	fmt.Println(StringSum("24c+55"))
+	fmt.Println(StringSum("24+55f"))
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -67,6 +76,10 @@ func StringSum(input string) (output string, err error) {
 		} else {
 			str += string(k)
 		}
+	}
+
+	if len(s) == 1 {
+		return "", errorNotTwoOperands
 	}
 
 	if len(str) != 0 {
