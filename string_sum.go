@@ -48,10 +48,7 @@ func StringSum(input string) (output string, err error) {
 	stringsList := stringRG.FindAllString(input, -1)
 
 	if len(stringsList) > 0 {
-		i, err := strconv.Atoi(stringsList[0])
-		if err != nil {
-			return "", err
-		}
+		return "", err
 	}
 
 	numbersRG, _ := regexp.Compile(`[0-9]+`)
