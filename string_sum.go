@@ -1,9 +1,9 @@
-package string_sum
-
-//package main
+//package string_sum
+package main
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -17,7 +17,7 @@ func main() {
 	fmt.Println(StringSum(""))
 	fmt.Println(StringSum("11+23+43"))
 	fmt.Println(StringSum("42"))
-	fmt.Println(StringSum("24c+55"))
+	fmt.Println(StringSum("78c+55"))
 	fmt.Println(StringSum("24+55f"))
 }
 
@@ -39,66 +39,53 @@ var (
 
 func StringSum(input string) (output string, err error) {
 	input = strings.TrimSpace(input)
-
 	if len(input) == 0 {
 		return "", errorEmptyInput
 	}
 
-	var operand = ""
-	var str = ""
-	var s []int
+	stringRG, _ := regexp.Compile(`[a-z]`)
+	stringsList := stringRG.FindAllString(input, -1)
 
-	for _, k := range input {
-		if string(k) == " " {
-			continue
-		}
-
-		if string(k) == "-" || string(k) == "+" {
-			if operand == "-" && string(k) == "-" {
-				operand = "+"
-			} else {
-				operand = "-"
-			}
-
-			if len(str) > 0 {
-				d, err := strconv.Atoi(str)
-				if len(s) == 2 {
-					return "", errorNotTwoOperands
-				} else {
-					if err != nil {
-						return "", err
-					} else {
-						s = append(s, d)
-					}
-				}
-				str = ""
-			}
-		} else {
-			str += string(k)
-		}
+	if len(stringsList) > 0 {
+		return "", err
 	}
 
-	if len(s) == 1 {
+	numbersRG, _ := regexp.Compile(`[0-9]+`)
+	numbersList := numbersRG.FindAllString(input, -1)
+
+	if len(numbersList) == 1 || len(numbersList) == 3 {
 		return "", errorNotTwoOperands
 	}
 
-	if len(str) != 0 {
-		d, err := strconv.Atoi(str)
-		if err != nil {
-			return "", err
-		} else {
-			s = append(s, d)
-		}
+	//fmt.Println(numbersList)
+
+	symbolsRG, _ := regexp.Compile(`[-+]`)
+	symbolsList := symbolsRG.FindAllString(input, -1)
+	//fmt.Println(symbolsList)
+
+	var sum = 0
+
+	a, err := strconv.Atoi(numbersList[0])
+	b, err := strconv.Atoi(numbersList[1])
+	if err != nil {
+		return "", err
 	}
 
-	var sum int
-
-	for _, i := range s {
-		switch operand {
-		case "-":
-			sum -= i
-		case "+":
-			sum += i
+	if len(symbolsList) == 1 {
+		if symbolsList[0] == "-" {
+			sum = a - b
+		} else {
+			sum = a + b
+		}
+	} else {
+		if symbolsList[0] == "-" && symbolsList[1] == "-" {
+			sum = -(a + b)
+		} else if symbolsList[0] == "-" && symbolsList[1] == "+" {
+			sum = b - a
+		} else if symbolsList[0] == "+" && symbolsList[1] == "-" {
+			sum = a - b
+		} else {
+			sum = a + b
 		}
 	}
 
