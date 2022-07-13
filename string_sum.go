@@ -10,16 +10,16 @@ import (
 )
 
 func main() {
-	fmt.Println(StringSum("24+55"))
-	fmt.Println(StringSum("-24+55"))
-	fmt.Println(StringSum("24-55"))
-	fmt.Println(StringSum("-24-55"))
-	fmt.Println(StringSum(" -24 - 55 "))
-	fmt.Println(StringSum(""))
-	fmt.Println(StringSum("11+23+43"))
-	fmt.Println(StringSum("42"))
-	fmt.Println(StringSum("78c+55"))
-	fmt.Println(StringSum("24+55f"))
+	fmt.Println(StringSum("24+55"))      //both_operands_positive
+	fmt.Println(StringSum("-24+55"))     //first_operand_negative
+	fmt.Println(StringSum("24-55"))      //"second_operand_negative"
+	fmt.Println(StringSum("-24-55"))     //both_operands_negative
+	fmt.Println(StringSum(" -24 - 55 ")) //with_whitespace
+	fmt.Println(StringSum(""))           //empty_input
+	fmt.Println(StringSum("11+23+43"))   //three_operands
+	fmt.Println(StringSum("42"))         //one_operand
+	fmt.Println(StringSum("78c+55"))     //letters_in_first_operand
+	fmt.Println(StringSum("24+55f"))     //letters_in_second_operand
 }
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -41,28 +41,28 @@ var (
 func StringSum(input string) (output string, err error) {
 	input = strings.TrimSpace(input)
 	if len(input) == 0 {
-		return "", errorEmptyInput
+		return "", fmt.Errorf("input is empty")
 	}
 
 	stringRG, _ := regexp.Compile(`[a-z]`)
 	stringsList := stringRG.FindAllString(input, -1)
 
 	if len(stringsList) > 0 {
-		return "", err
+		i, err := strconv.Atoi(stringsList[0])
+		if err != nil {
+			return "", err
+		}
 	}
 
 	numbersRG, _ := regexp.Compile(`[0-9]+`)
 	numbersList := numbersRG.FindAllString(input, -1)
 
 	if len(numbersList) == 1 || len(numbersList) == 3 {
-		return "", errorNotTwoOperands
+		return "", fmt.Errorf("expecting two operands, but received more or less")
 	}
-
-	//fmt.Println(numbersList)
 
 	symbolsRG, _ := regexp.Compile(`[-+]`)
 	symbolsList := symbolsRG.FindAllString(input, -1)
-	//fmt.Println(symbolsList)
 
 	var sum = 0
 
